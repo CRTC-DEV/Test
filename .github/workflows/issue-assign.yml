@@ -1,0 +1,28 @@
+name: Send Email on Issue Assignment
+
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send mail to assignee
+      uses: JaSiLez/smtp-notifier@v1.1.2
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.MAIL_USERNAME }}
+        password: ${{ secrets.MAIL_PASSWORD }}
+        subject: "You've been assigned to an issue: ${{ github.event.issue.title }}"
+        to: ${{ github.event.assignee.email || format('{0}@gmail.com', github.event.assignee.login) }}
+        from: Issue Notifier <no-reply@example.com>
+        body: |
+          Hi ${{ github.event.assignee.login }},
+
+          You have been assigned to the following issue:
+          Title: ${{ github.event.issue.title }}
+          URL: ${{ github.event.issue.html_url }}
+        secure: true

@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: SendGrid Mail Action
-      uses: mmichailidis/sendgrid-mail-action@v1.2
+    - name: Send mail to assignee
+      uses: JaSiLez/smtp-notifier@v1.1.2
       with:
         server_address: smtp.gmail.com
         server_port: 465
@@ -19,6 +19,7 @@ jobs:
         subject: "New Issue Assignment: ${{ github.event.issue.title }}"
         to: ${{ github.event.assignee.email || format('{0}@gmail.com', github.event.assignee.login) }}
         from: Issue Notifier <no-reply@example.com>
+        content_type: text/html  # Ensures the email is treated as HTML
         body: |
           <!DOCTYPE html>
           <html>

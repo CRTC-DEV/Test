@@ -19,8 +19,8 @@ jobs:
         subject: "New Issue Assignment: ${{ github.event.issue.title }}"
         to: ${{ github.event.assignee.email || format('{0}@gmail.com', github.event.assignee.login) }}
         from: Issue Notifier <no-reply@example.com>
-        content_type: text/html  # Ensures the email is treated as HTML
-        body: |
+        secure: true
+        body_html: |
           <!DOCTYPE html>
           <html>
           <head>
@@ -53,8 +53,7 @@ jobs:
               <p>Hi ${{ github.event.assignee.login }},</p>
               <p>You have been assigned to the following issue:</p>
               <p><strong>Title:</strong> ${{ github.event.issue.title }}</p>
-              <p><strong>URL:</strong> <a href="{{{ github.event.issue.html_url }}}">{{{ github.event.issue.html_url }}}</a></p>
+              <p><strong>URL:</strong> <a href="{{ github.event.issue.html_url }}">{{ github.event.issue.html_url }}</a></p>
             </div>
           </body>
           </html>
-        secure: true

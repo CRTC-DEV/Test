@@ -16,44 +16,13 @@ jobs:
         server_port: 465
         username: ${{ secrets.MAIL_USERNAME }}
         password: ${{ secrets.MAIL_PASSWORD }}
-        subject: "New Issue Assignment: ${{ github.event.issue.title }}"
+        subject: "You've been assigned to an issue: ${{ github.event.issue.title }}"
         to: ${{ github.event.assignee.email || format('{0}@gmail.com', github.event.assignee.login) }}
         from: Issue Notifier <no-reply@example.com>
+        body: |
+          Hi ${{ github.event.assignee.login }},
+
+          You have been assigned to the following issue:
+          Title: ${{ github.event.issue.title }}
+          URL: ${{ github.event.issue.html_url }}
         secure: true
-        body_html: |
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>New Issue Assignment</title>
-            <style>
-              body {
-                font-family: sans-serif;
-              }
-              .container {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                border: 1px solid #ccc;
-              }
-              h1 {
-                color: #333;
-              }
-              p {
-                line-height: 1.6;
-              }
-              a {
-                color: #007bff;
-                text-decoration: none;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>You've been assigned to an issue!</h1>
-              <p>Hi ${{ github.event.assignee.login }},</p>
-              <p>You have been assigned to the following issue:</p>
-              <p><strong>Title:</strong> ${{ github.event.issue.title }}</p>
-              <p><strong>URL:</strong> <a href="{{ github.event.issue.html_url }}">{{ github.event.issue.html_url }}</a></p>
-            </div>
-          </body>
-          </html>

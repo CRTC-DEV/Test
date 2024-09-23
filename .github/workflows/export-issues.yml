@@ -1,0 +1,33 @@
+name: Export issues and send email
+
+on:
+  schedule:
+    - cron: '0 0,8,16 * * *'  # Runs every 8 hours
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  export-issues:
+    name: Export issues to CSV and Send Email
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'  # Use Python 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install PyGithub pandas smtplib
+
+    - name: Export issues to CSV
+      run: |
+        python .github/scripts/export_issues.py
+
+    - name: Send CSV via Email
+      run: |
+        python .github/scripts/send_email.py
